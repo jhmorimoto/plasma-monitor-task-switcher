@@ -20,19 +20,20 @@ KWin.TabBoxSwitcher {
                 id: dialogContent
                 focus: true
                 property var outputs: []
-                readonly property int groupWidth: 320
+                readonly property int columns: 4
                 readonly property int groupSpacing: Kirigami.Units.largeSpacing
+                readonly property int groupWidth: columns * 150 + (columns + 1) * groupSpacing
                 width: Math.min(tabBox.screenGeometry.width * 0.9,
                                 Math.max(groupWidth + 2 * groupSpacing,
                                          outputs.length * (groupWidth + groupSpacing) + groupSpacing))
-                height: Math.min(tabBox.screenGeometry.height * 0.65, 550)
+                height: Math.min(tabBox.screenGeometry.height * 0.45, 320)
 
                 Component.onCompleted: {
                     const screens = Array.from(KWin.Workspace.screens || []);
                     screens.sort((left, right) => left.geometry.y - right.geometry.y ||
                                                left.geometry.x - right.geometry.x);
                     outputs = screens;
-                    Qt.callLater(ensureSelectionVisible);
+                    Qt.callLater(() => dialogContent.ensureSelectionVisible());
                 }
 
                 function selectedTile() {
@@ -47,7 +48,7 @@ KWin.TabBoxSwitcher {
                 }
 
                 function ensureSelectionVisible() {
-                    const selection = selectedTile();
+                    const selection = dialogContent.selectedTile();
                     if (!selection) {
                         return;
                     }
@@ -64,7 +65,7 @@ KWin.TabBoxSwitcher {
                 }
 
                 function moveSelection(key) {
-                    const selected = selectedTile();
+                    const selected = dialogContent.selectedTile();
                     let bestIndex = -1;
                     let bestDistance = Infinity;
                     const origin = selected?.tile.mapToItem(dialogContent,
@@ -113,7 +114,7 @@ KWin.TabBoxSwitcher {
                 Connections {
                     target: tabBox
                     function onCurrentIndexChanged() {
-                        Qt.callLater(dialogContent.ensureSelectionVisible);
+                        Qt.callLater(() => dialogContent.ensureSelectionVisible());
                     }
                 }
 
@@ -182,11 +183,13 @@ KWin.TabBoxSwitcher {
                                         contentHeight: Math.max(height, tileFlow.implicitHeight)
                                         flickableDirection: Flickable.VerticalFlick
 
-                                        Flow {
+                                        Grid {
                                             id: tileFlow
                                             width: windowViewport.width
                                             height: implicitHeight
-                                            spacing: Kirigami.Units.largeSpacing
+                                            columns: dialogContent.columns
+                                            rowSpacing: Kirigami.Units.largeSpacing
+                                            columnSpacing: Kirigami.Units.largeSpacing
 
                                             Repeater {
                                                 id: windowRepeater
@@ -199,8 +202,8 @@ KWin.TabBoxSwitcher {
                                                         return windows.find(window => window.internalId === windowId) || null;
                                                     }
                                                     visible: clientWindow?.output?.name === monitorGroup.output.name
-                                                    width: (tileFlow.width - tileFlow.spacing) / 2
-                                                    height: 150
+                                                    width: 150
+                                                    height: 116
                                                     hoverEnabled: true
                                                     Accessible.name: model.caption
                                                     Accessible.role: Accessible.ListItem
@@ -221,7 +224,7 @@ KWin.TabBoxSwitcher {
                                                         anchors.right: parent.right
                                                         anchors.top: parent.top
                                                         anchors.margins: Kirigami.Units.smallSpacing
-                                                        height: 112
+                                                        height: 82
 
                                                         Loader {
                                                             anchors.fill: parent
@@ -232,8 +235,8 @@ KWin.TabBoxSwitcher {
                                                         }
 
                                                         Kirigami.Icon {
-                                                            width: 28
-                                                            height: 28
+                                                            width: 24
+                                                            height: 24
                                                             anchors.left: parent.left
                                                             anchors.bottom: parent.bottom
                                                             source: model.icon

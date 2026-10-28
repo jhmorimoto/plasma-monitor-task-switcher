@@ -7,10 +7,14 @@ Layout de Alt+Tab para KDE Plasma 6.8 com miniaturas do KWin agrupadas por monit
 Na raiz deste projeto:
 
 ```sh
-kpackagetool6 -t KWin/WindowSwitcher -i "$PWD"
+make install
 ```
 
-Em **Configuracoes do Sistema > Gerenciamento de janelas > Seletor de tarefas**, escolha **Monitor Task Switcher** somente como layout **Principal**. O layout **Alternativo** pode continuar como estava. Para instalar uma versao atualizada, use `kpackagetool6 -t KWin/WindowSwitcher -u "$PWD"`.
+O comando instala o pacote na primeira vez e substitui a instalacao existente nas execucoes seguintes. Em **Configuracoes do Sistema > Gerenciamento de janelas > Seletor de tarefas**, escolha **Monitor Task Switcher** somente como layout **Principal**. O layout **Alternativo** pode continuar como estava.
+
+Apos editar `contents/ui/main.qml`, execute `make install` novamente e feche e reabra o Alt+Tab. Confirme o layout principal selecionado com `kreadconfig6 --file kwinrc --group TabBox --key LayoutName`: o resultado deve ser `monitor_task_switcher`. Se aparecer `clay_grid`, o KWin ainda esta usando outro layout; selecione **Monitor Task Switcher** nas Configuracoes do Sistema. `make uninstall` remove o pacote, portanto suas alteracoes no QML deixam de aparecer no Alt+Tab ate uma nova instalacao e selecao.
+
+O KWin pode manter o componente QML anterior em memoria mesmo depois de `make install` e de uma recarga de configuracao. Nesta sessao isso foi confirmado: o arquivo instalado tinha `columns: 10`, mas o KWin ainda executava o trecho antigo. Para garantir que uma alteracao no QML apareca, encerre a sessao KDE e entre novamente apos instalar. Nao reinicie o KWin Wayland dentro da sessao.
 
 No mesmo painel, configure os filtros do seletor principal:
 
@@ -31,7 +35,7 @@ Abra o seletor com janelas em dois monitores, incluindo uma minimizada, outra em
 Selecione novamente o layout anterior (nesta sessao, **Clay Grid**) para o seletor principal. Se tiver mudado os filtros acima, restaure-os conforme sua preferencia. Depois remova o pacote com:
 
 ```sh
-kpackagetool6 -t KWin/WindowSwitcher -r monitor_task_switcher
+make uninstall
 ```
 
 Isso nao modifica os atalhos globais nem o layout alternativo.
