@@ -1,0 +1,10 @@
+{
+  "KPackageStructure": "KWin/WindowSwitcher",
+  "KPlugin": {
+    "Id": "monitor_task_switcher",
+    "Name": "Monitor Task Switcher",
+    "Description": "Window switcher with live thumbnails grouped by monitor",
+    "Icon": "preferences-system-windows-switcher-thumbnail-grid"
+  },
+  "X-Plasma-API": "declarativeappletscript"
+}
