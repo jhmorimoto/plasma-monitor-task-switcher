@@ -4,6 +4,14 @@ Layout de Alt+Tab para KDE Plasma 6.8 com miniaturas do KWin agrupadas por monit
 
 ## Instalar
 
+Para criar um pacote que pode ser instalado pelas configuracoes do seletor de tarefas, execute:
+
+```sh
+make package
+```
+
+O arquivo `monitor_task_switcher.kwinswitcher` pode ser selecionado na opcao de instalacao de um layout a partir de arquivo.
+
 Na raiz deste projeto:
 
 ```sh
