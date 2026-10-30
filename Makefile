@@ -8,11 +8,11 @@ package:
 	rm -f "$(PACKAGE_FILE)"
 	zip -q -r -FS "$(PACKAGE_FILE)" metadata.json contents
 
-install:
+install: package
 	@if $(KPACKAGE_TOOL) -t KWin/WindowSwitcher -s monitor_task_switcher >/dev/null 2>&1; then \
-		$(KPACKAGE_TOOL) -t KWin/WindowSwitcher -u "$(PACKAGE_DIR)"; \
+		$(KPACKAGE_TOOL) -t KWin/WindowSwitcher -u "$(PACKAGE_FILE)"; \
 	else \
-		$(KPACKAGE_TOOL) -t KWin/WindowSwitcher -i "$(PACKAGE_DIR)"; \
+		$(KPACKAGE_TOOL) -t KWin/WindowSwitcher -i "$(PACKAGE_FILE)"; \
 	fi
 	@printf '%s\n' 'Para carregar mudancas QML, encerre a sessao KDE e entre novamente.'
 
