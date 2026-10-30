@@ -34,13 +34,19 @@ Esses filtros sao aplicados pelo KWin antes de expor as janelas ao layout. O pac
 
 O pacote nao cria nem altera atalhos. Alt+Tab, Alt+Shift+Tab e os atalhos equivalentes configurados no KDE continuam usando as acoes nativas do KWin. As setas navegam espacialmente dentro do painel; clique ativa uma janela, e o botao no canto fecha uma janela quando permitido. Selecionar uma janela de outra atividade solicita sua ativacao ao KWin. Miniaturas minimizadas podem manter o ultimo quadro disponivel; o icone e o titulo permanecem visiveis.
 
+## Atualizando para novas versões
+
+Basta usar o comando `make install` para substitui a versão que já estiver instalada.
+
+Depois de instalada uma nova versão, é necessário reiniciar o plasma desktop para que a mudança surta efeito. Isto é uma restrição do KDE, que mantém um cache do Task Switcher em memória até o plasma desktop ser reiniciado. Logout e login na sessão desktop já é suficiente para carregar a nova versão.
+
 ## Verificar
 
 Abra o seletor com janelas em dois monitores, incluindo uma minimizada, outra em todos os desktops e uma de outra atividade. Confira a caixa vazia ao deixar um monitor sem janelas, a selecao com Tab/Shift+Tab e setas e a rolagem de cada caixa. Alteracoes na disposicao de monitores durante um Alt+Tab aberto aparecem na proxima abertura.
 
 ## Reverter
 
-Selecione novamente o layout anterior (nesta sessao, **Clay Grid**) para o seletor principal. Se tiver mudado os filtros acima, restaure-os conforme sua preferencia. Depois remova o pacote com:
+Selecione novamente outro layout como seletor principal. Se tiver mudado os filtros acima, restaure-os conforme sua preferencia. Depois remova o pacote com:
 
 ```sh
 make uninstall
