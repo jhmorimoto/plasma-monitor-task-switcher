@@ -22,10 +22,13 @@ KWin.TabBoxSwitcher {
                 property var outputs: []
                 readonly property int columns: 4
                 readonly property int groupSpacing: Kirigami.Units.largeSpacing
-                readonly property int groupWidth: columns * 150 + (columns + 1) * groupSpacing
+                function groupWidthForCount(count) {
+                    const visibleColumns = Math.max(1, Math.min(count, columns));
+                    return visibleColumns * 150 + (visibleColumns + 1) * groupSpacing;
+                }
                 width: Math.min(tabBox.screenGeometry.width * 0.9,
-                                Math.max(groupWidth + 2 * groupSpacing,
-                                         outputs.length * (groupWidth + groupSpacing) + groupSpacing))
+                                Math.max(groupWidthForCount(1) + 2 * groupSpacing,
+                                         monitorRow.implicitWidth + 2 * groupSpacing))
                 height: Math.min(tabBox.screenGeometry.height * 0.45, 320)
 
                 Component.onCompleted: {
@@ -151,7 +154,7 @@ KWin.TabBoxSwitcher {
                                     }
                                     return total;
                                 }
-                                width: dialogContent.groupWidth
+                                width: dialogContent.groupWidthForCount(windowCount)
                                 height: monitorStrip.height
 
                                 Rectangle {
